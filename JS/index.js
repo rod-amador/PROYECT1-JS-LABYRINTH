@@ -1,70 +1,128 @@
 let canvas = document.getElementById('game')
 let ctx = null;
 
-// para empezar
-// mapa con los objetos que vamos a crear 40*30 
-/*
-//canvas
-//array
-//variables
-//constructores
-//instancias
-//main functions
-//aux functions
-//listeners
-*/
-let gameMap = [
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//40
+//mapa 1
+let gameMap = [			// todos los calculos es el num -1  xq empieza la cuenta en 0
+	4, 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 	4, 		//17
+//  				22				  28		  32
+	4, 	2, 2, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 	4, 		//34
+	4, 	2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 	4, 		//51
+	4, 	0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 	4, 		//68
+//		69				 75    77  (3,11)         83
+	4, 	1, 0, 2, 0, 2, 2, 1, 0, 1, 0, 2, 2, 2, 2, 1, 	4, 		//85
+	4, 	2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 	4, 		//102
+//												  117
+	4, 	2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 2, 2, 0, 1, 	4, 		 //119
+	4, 	2, 0, 0, 0, 0, 0, 2, 4, 2, 0, 0, 0, 2, 0, 2, 	4, 		 //136
+//						   (8,8)     147
+	4, 	2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 0, 2, 0, 2, 	4, 		 //153
+	4, 	0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 	4, 		 //170
+//				   175   177   179
+	4, 	2, 2, 2, 0, 1, 0, 1, 0, 1, 0, 2, 0, 2, 0, 2, 	4, 		 //187
+//								
+	4, 	2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 	4,		//204
+	4, 	2, 0, 2, 2, 2, 0, 2, 0, 2, 0, 2, 0, 2, 2, 2, 	4, 		//221
+	4, 	2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 	4, 		//238
+	4, 	2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 	4, 		//255
+	4, 	1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 	4, 		//272
+//      256   258        262         266          270
+	4, 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 	4, 		// 289
+//						  (14,8)
+]; //17   17*17 	 = 289
 
-	0, 		2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //80
-	0, 		2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//120
-	0, 		2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //160
-	0, 		2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //200
+//mapa2
+let gameMap2 = [				   // (10, 1)
+	4, 	4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 	4, 		//17
+	4, 	4, 4, 4, 4, 0, 0, 0, 4, 0, 1, 0, 4, 4, 4, 4, 	4, 			//34
+	4, 	4, 4, 4, 0, 5, 5, 5, 0, 2, 2, 0, 0, 0, 4, 4, 	4, 		//51
+	4, 	4, 4, 0, 0, 5, 5, 5, 5, 5, 5, 0, 5, 5, 0, 4, 	4, 	 		//68
+	4, 	4, 4, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 	4, 	 		//85
+	4, 	4, 0, 0, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0, 	4, 	 		//102
+	4, 	0, 0, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 	4, 	 		 //119
+	0, 	2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 0, 	4, 			 //136
+	0, 	2, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0, 5, 0, 	4, 			 //153
+	0, 	2, 2, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 	0, 			 //170
+	0, 	2, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 	0, 		 	 //187
+	0, 	2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 	4, 			//204
 
-	0, 		2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//240
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //280
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//320
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0,	 	0,  //360
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //400
+	4, 	0, 0, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0, 	0, 			//221
+	4, 	4, 0, 5, 5, 0, 0, 5, 5, 5, 5, 0, 0, 5, 5, 5, 	0, 	 		//238
+	4, 	4, 0, 5, 5, 0, 0, 5, 0, 5, 5, 0, 0, 5, 5, 5, 	0, 	 		//255
+//					    (7,15)
+	4, 	4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 	4, 		//272
+	4, 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 	4, 		// 289
+]; //17   17*17 	 = 289
 
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//440
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //480
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//520
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //560
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //600
 
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//640
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //680
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//720
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //760
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //800
 
-	0,		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//840
-	0,		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //880
-	0,		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//920
-	0,		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //960
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //1000
 
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//1040
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //1080
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,	//1120
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //1160
 
-	0, 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  	0, 0, 0, 0, 0, 0, 0, 0, 	0,  //1200
-]; //30   40*30  1200 tiles
 
-// para salir de lios, usar teletransportadores con evento que nos llevaran al siguiente puzzle... 
+
+let tileEvents = {
+	// LOS TILES TRANSPORTAN USANDO UNA FUNCION DEL CHARACTER QUE VEREMOS MAS ADELANTE
+	// TILE 					// LUGAR A TRANSPORTAR 
+		// zona inicial	// el evento es el # dentro del array
+		// 17 eventos iniciales
+		// 4 llevan al inicio  (1,1)
+		// 5 llevan al centro  (8,8)
+		// 1 lleva a la salida	(7/28)
+		// 3 llevan a otro transportador   (11,3)
+		// 4 lleven a otro transportador   (8,14)
+		22 : function(c) { c.placeAt(8,8);  },
+		28 : function(c) { c.placeAt(1,1);  },
+		32 : function(c) { c.placeAt(8,14); },
+//									lleva al inicio para enseñar
+		69 : function(c) { c.placeAt(1,1);  },	
+		75 : function(c) { c.placeAt(11,3); },
+		77 : function(c) { c.placeAt(8,14); },
+		83 : function(c) { c.placeAt(8,14); },
+
+		117 : function(c) { c.placeAt(8,14); },
+		147 : function(c) { c.placeAt(11,3); },
+
+		175 : function(c) { c.placeAt(1,1);  },
+		177 : function(c) { c.placeAt(8,8);  },
+		179 : function(c) { c.placeAt(11,3); },
+
+		256 : function(c) { c.placeAt(8,8);  },
+		262 : function(c) { c.placeAt(1,1);  },
+		266 : function(c) { c.placeAt(11,3); },
+		270 : function(c) { c.placeAt(8,8);  },
+
+//	cambia al mapa2
+// evento cambia todo el array y te transporta a tile 1
+		258 : function(c) { 
+			c.placeAt(7,15); 
+			gameMap = gameMap2;	// cambia de nivel
+			tileEvents = {}		// borra todos los eventos pasados para evitar lios
+				//anotar eventos que lleven al sig nivel, eliminar eventos pasados
+			
+		},		// salida
+			
+		//crear evento para el segundo nivel 
+
+	
+		
+	// crear un array que cambie el placeat(x,y) de forma aleatoria
+		
+	///////////////////////////////////////////////////
+	}
+
+
 
 //////////////////////////////////////////////////////VARIABLES
-// pixeles de cada Width y Height
+// pixeles de cada Width y Height // estan siempre se quedan igual
 let tileW = 40, tileH = 40;
-// cuanto abarca el array por cuadros
-let mapW = 30, mapH = 30;
+// cuanto abarca el array por cuadros // cambiar mapw y h  para cambiar cuantos cuadros hay en array
+let mapW = 17, mapH = 17;
 // el tiempo en frames, y el tiempo actual
 let currentSecond = 0, frameCount = 0, framesLastSecond = 0, lastFrameTime = 0;
 // imprime el tiempo en segundos
+
+
 let counter = 1
-	function timeCounter() {counter++;	drawGame()}
+	function timeCounter() {counter++}
 	setInterval(timeCounter, 1000 )
 // de aqui se estan obteniendo los sprites
 let tileset = null, tilesetURL = "./img/tileset.png", tilesetLoaded = false;
@@ -89,7 +147,7 @@ let tileTypes = {
 	1 : { floor:floorTypes.grass,		sprite:[	{x:40, y:0,w:40,h:40}]	},
 	2 : { floor:floorTypes.path,		sprite:[	{x:80, y:0,w:40,h:40}]	},
 	3 : { floor:floorTypes.solid,		sprite:[	{x:120,y:0,w:40,h:40}]	},
-	4 : { floor:floorTypes.water,		sprite:[
+	4 : { floor:floorTypes.water,		sprite:[ //parece moverse  al cambiar el sprite
 			{x:160,y:0, w:40,h:40,d:200}, {x:200, y:0,  w:40,h:40,d:200},
 			{x:160,y:40,w:40,h:40,d:200}, {x:200, y:40, w:40,h:40,d:200},
 			{x:160,y:40,w:40,h:40,d:200}, {x:200, y:0,  w:40,h:40,d:200}
@@ -141,97 +199,7 @@ let keysDown = {
 	40 : false
 };
 
-//  para crear eventos al tocar el TILE y transportar al player
-// el numero del array fue un pedo encontrarlo, pero se pudo
-// cada tile tiene un num de posicion y en ese ejecutamos el evento que queremos que suceda
 
-let tileEvents = {
-
-// LOS TILES TRANSPORTAN USANDO UNA FUNCION DEL CHARACTER QUE VEREMOS MAS ADELANTE
-//POR ORDEN PUSE ESTE EVENTO EN EL AREA DE VARIABLES
-//LA PROPIEDAD PARA TRANSPORTARSE ES INHERENTE DE CHARACTER, POR ESO SU FUNCION ESTA EN SU CONSTRUCTOR 
-
-//PRUEBA QUE LLEVA A PRINCIPIO JUEGO // SE SACO A PARTIR DE PRUEBA Y ERROR DE NUMS.
-	40 : function(c) { c.placeAt(1,1);  },
- // TILE 					// LUGAR A TRANSPORTAR 
-
-
-	// endGame // al llegar aqui ganas el juego!
-	// agregar cambio de imagen para que diga you won o algo y ya en lugar de un alerta
-
-	868 : function() { alert("Congratulations!! You Found The Exit!!")  },
-
-	// zona bosque y transportadores		// el evento es el # dentro del array
-	41 : function(c) { c.placeAt(14,1);  },
-	43 : function(c) { c.placeAt(15,2);  },
-	45 : function(c) { c.placeAt(11,2);  },
-	47 : function(c) { c.placeAt(15,2);  },
-	49 : function(c) { c.placeAt(16,1);  },
-
-	101 : function(c) { c.placeAt(14,3);  },
-	103 : function(c) { c.placeAt(15,2);  },
-	105 : function(c) { c.placeAt(19,2);  },
-	107 : function(c) { c.placeAt(21,1);  },
-	109 : function(c) { c.placeAt(16,3);  },
-
-	255 : function(c) { c.placeAt(15,2);  },
-
-///////////////////////////////////////////////////
-
-	// transportador siguiente zona
-	371 : function(c) { c.placeAt(15,10); },
-	379 : function(c) { c.placeAt(17,15); },
-
-
-	// teletransportador zona 4  izquierda
-	431 : function(c) { c.placeAt(12,19); },
-	434 : function(c) { c.placeAt(17,15); },
-	491 : function(c) { c.placeAt(15,12); },
-	494 : function(c) { c.placeAt(17,19); },
-
-	// teletransportador zona 4 derecha
-	436 : function(c) { c.placeAt(17,19); },
-	439 : function(c) { c.placeAt(15,12); },
-	496 : function(c) { c.placeAt(17,12); },
-	499 : function(c) { c.placeAt(12,19); },
-
-
-	// teletransportador zona 3 izquierda
-	551 : function(c) { c.placeAt(12,23); },
-	554 : function(c) { c.placeAt(17,15); },
-	611 : function(c) { c.placeAt(12,15); },
-	614 : function(c) { c.placeAt(17,19); },
-
-	// teletransportador zona 3 derecha
-	556 : function(c) { c.placeAt(12,15); },
-	559 : function(c) { c.placeAt(12,19); },
-	616 : function(c) { c.placeAt(17,23); },
-	619 : function(c) { c.placeAt(17,15); },
-
-	//  teletransportador zona 2 izquierda
-	671 : function(c) { c.placeAt(12,19); },
-	674 : function(c) { c.placeAt(12,23); },
-	731 : function(c) { c.placeAt(17,19); },
-	734 : function(c) { c.placeAt(17,23); },
-
-	//  teletransportador zona 2 derecha
-	676 : function(c) { c.placeAt(12,19); },
-	679 : function(c) { c.placeAt(17,27); },
-	736 : function(c) { c.placeAt(12,23); },
-	739 : function(c) { c.placeAt(17,19); },
-
-	//  teletransportador zona 1 izquierda
-	791 : function(c) { c.placeAt(17,27); },
-	794 : function(c) { c.placeAt(12,23); },
-	854 : function(c) { c.placeAt(17,23); },
-
-	//  teletransportador zona 1 derecha
-	796 : function(c) { c.placeAt(12,23); },
-	799 : function(c) { c.placeAt(12,27); },
-	856 : function(c) { c.placeAt(17,23); },
-	859 : function(c) { c.placeAt(17,19); }
-
-}
  
 // EL juego tenga scrolling
 // modificar el viewport segun el tile donde estes para aparentar scrolling
@@ -241,7 +209,7 @@ let viewport = {
 	startTile	: [0,0],
 	endTile		: [0,0],
 	offset		: [0,0],
-	update		: function(px, py) {
+	update		:  function (px, py) {
 		this.offset[0] = Math.floor((this.screen[0]/2) - px);
 		this.offset[1] = Math.floor((this.screen[1]/2) - py);
 
@@ -263,7 +231,7 @@ let viewport = {
 };
 ///////////////////////////////////////////////////////////
 ///////////function del jugador, 
-//despues si da tiempo se agregara 2do jugador
+
 var player = new Character();
 
 function Character()
@@ -273,10 +241,11 @@ function Character()
 	this.timeMoved	= 0;
 	this.dimensions	= [30,30];
 	this.position	= [45,45];
+	////////////////////////////////////////////////////////
 // QUE TAN LENTO/RÁPIDO SE MUEVE DE ACUERDO AL TIPO DE TILE
 	this.delayMove	= {};
-	this.delayMove[floorTypes.path]			= 400;
-	this.delayMove[floorTypes.grass]		= 800;
+	this.delayMove[floorTypes.path]			= 100;
+	this.delayMove[floorTypes.grass]		= 250;
 	this.delayMove[floorTypes.ice]			= 300;
 	this.delayMove[floorTypes.conveyorU]	= 200;
 	this.delayMove[floorTypes.conveyorD]	= 200;
@@ -354,13 +323,13 @@ Character.prototype.processMovement = function(t)
 
 	return true;
 }
-
 //// acaba funcion de movimiento 
 
 // determinar si el camino se puede atravesar o no estará permitido de acuerdo al tile
+//  	eje x horizontal	eje y vertical								(		x		/  		y)
 Character.prototype.canMoveTo = function(x, y)
 {
-	if(x < 0 || x >= mapW || y < 0 || y >= mapH) { return false; }
+	if(x < 0 	|| x >= mapW 		|| y < 0 	|| y >= mapH	) { return false; }
 	if(typeof this.delayMove[tileTypes[gameMap[toIndex(x,y)]].floor]=='undefined') { return false; }
 	return true;
 };
@@ -392,10 +361,10 @@ Character.prototype.moveDirection = function(d, t) {
 	}
 };
 
-// determina que parte del array...
+// determina que parte del array se transporta ...
 function toIndex(x, y)	{return((y * mapW) + x);}
 
-// permitira el uso de sprites despues //
+// permitira el uso de sprites en los tiles ****
 function getFrame(sprite, duration, time, animated)
 {
 	if(!animated) { return sprite[0]; }
@@ -403,7 +372,7 @@ function getFrame(sprite, duration, time, animated)
 
 	for(x in sprite)
 	{
-		if(sprite[x].end>=time) { return sprite[x]; }
+		if(sprite[x].end >=time) { return sprite[x]; }
 	}
 }
 /////////////////////////////
@@ -421,23 +390,18 @@ window.onload = function()
 		if(e.keyCode>=37 && e.keyCode<=40) { keysDown[e.keyCode] = false; }	});
 
 
+	
 	viewport.screen = [document.getElementById('game').width,
 		document.getElementById('game').height];
 
 
-		// si las tiles no cargan avisará que hubo pedos
+		
 	tileset = new Image();
-	tileset.onerror = function()
-	{
-		ctx = null;
-		alert("Failed loading tileset.");
-	};
 	tileset.onload = function() { tilesetLoaded = true; };
 	tileset.src = tilesetURL;
 
-
-	// animacion a futuro si da tiempo
-	for(x in tileTypes)
+	// hace que los sprites se vean animados, pasan por sus 4 estados / agua y conveyors
+	for(x in tileTypes)	
 	{
 		tileTypes[x]['animated'] = tileTypes[x].sprite.length > 1 ? true : false;
 
@@ -455,36 +419,36 @@ window.onload = function()
 			tileTypes[x]['spriteDuration'] = t;
 		}
 	}
+
 };
 
 //// funcion que dibujara el juego
 ////////////////////////////////////////////////
+// aqui esta el error 
 function drawGame()
 {
-	if(ctx==null) { return; }
-	if(!tilesetLoaded) { requestAnimationFrame(drawGame); return; }
-
 	let currentFrameTime = Date.now();
 	
-
-	let sec = Math.floor(Date.now()/1000);
-	if(sec!=currentSecond)
+	let sec = Math.floor(Date.now()	/1000);
+	if(sec	!=	currentSecond)
 	{
 		currentSecond = sec;
 		framesLastSecond = frameCount;
 		frameCount = 1;
 	}
 	else { frameCount++; }
+
  frameCount = counter
 
 	////////////////////////////////////////////////////
 	// dibuje movimiento del jugador de acuerdo a frames
+
 	if(!player.processMovement(currentFrameTime))
 	{
-		if(keysDown[38] && player.canMoveUp())			{ player.moveUp(currentFrameTime); }
-		else if(keysDown[40] && player.canMoveDown())	{ player.moveDown(currentFrameTime); }
-		else if(keysDown[37] && player.canMoveLeft())	{ player.moveLeft(currentFrameTime); }
-		else if(keysDown[39] && player.canMoveRight())	{ player.moveRight(currentFrameTime); }
+		if(		keysDown[38] && player.canMoveUp())		{ player.moveUp		(currentFrameTime); }
+		else if(keysDown[40] && player.canMoveDown())	{ player.moveDown	(currentFrameTime); }
+		else if(keysDown[37] && player.canMoveLeft())	{ player.moveLeft	(currentFrameTime); }
+		else if(keysDown[39] && player.canMoveRight())	{ player.moveRight	(currentFrameTime); }
 	}
 //// dibuje la vista conforme el jugador se mueve
 	viewport.update(player.position[0] + (player.dimensions[0]/2),
@@ -493,12 +457,12 @@ function drawGame()
 	ctx.fillStyle = "#000000";
 	ctx.fillRect(0, 0, viewport.screen[0], viewport.screen[1]);
 
-	for(var y = viewport.startTile[1]; y <= viewport.endTile[1]; ++y)
+	for(let y = viewport.startTile[1]; y <= viewport.endTile[1]; ++y)
 	{
-		for(var x = viewport.startTile[0]; x <= viewport.endTile[0]; ++x)
+		for(let x = viewport.startTile[0]; x <= viewport.endTile[0]; ++x)
 		{
-			var tile = tileTypes[gameMap[toIndex(x,y)]];
-			var sprite = getFrame(tile.sprite, tile.spriteDuration,
+			let tile = tileTypes[gameMap[toIndex(x,y)]];
+			let sprite = getFrame(tile.sprite, tile.spriteDuration,
 				currentFrameTime, tile.animated);
 			ctx.drawImage(tileset,
 				sprite.x, sprite.y, sprite.w, sprite.h,
@@ -508,9 +472,7 @@ function drawGame()
 	}
 
 ////////////////////////////////////////////// dibuje sprites y tiles
-	
-
-	var sprite = player.sprites[player.direction];
+	let sprite = player.sprites[player.direction];
 	ctx.drawImage(tileset,
 		sprite[0].x, sprite[0].y, sprite[0].w, sprite[0].h,
 		viewport.offset[0] + player.position[0], viewport.offset[1] + player.position[1],
@@ -521,6 +483,7 @@ function drawGame()
 
 	lastFrameTime = currentFrameTime;
 	requestAnimationFrame(drawGame);
+
 }
 
 /// funciones de ganar perder
