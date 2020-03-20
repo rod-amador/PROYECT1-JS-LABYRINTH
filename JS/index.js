@@ -1,5 +1,6 @@
 let canvas = document.getElementById('game')
 let ctx = null;
+let myAudio = document.getElementById("audio");
 
 //mapa 1
 let gameMap = [			// todos los calculos es el num -1  xq empieza la cuenta en 0
@@ -46,8 +47,8 @@ let gameMap2 = [
 	0, 	2, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 	0, 		//187
 	0, 	2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 	4, 		//204
 
-	4, 	0, 0, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0, 	4, 		//221
-	4, 	4, 0, 5, 5, 0, 0, 5, 5, 5, 5, 0, 0, 5, 5, 5, 	0, 	 	//238
+	4, 	0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 	4, 		//221
+	4, 	4, 0, 5, 5, 0, 0, 5, 0, 5, 5, 0, 0, 5, 5, 5, 	0, 	 	//238
 	4, 	4, 0, 5, 5, 0, 0, 5, 0, 5, 5, 0, 0, 5, 5, 5, 	0, 	 	//255
 //					    (7,15)
 	4, 	4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 	4, 		//272
@@ -63,21 +64,21 @@ let gameMap3 = [
 
 
 	4, 		8, 		2, 2, 2, 	8, 6, 	2, 2, 2, 	7, 7, 	2, 2, 2, 	6,		4, 	 	//85
-	4, 		8, 		2, 2, 2, 	8, 6, 	2, 2, 2, 	6, 6, 	2, 2, 2, 	8,		4, 	 	//102
+	4, 		8, 		2, 2, 2, 	6, 7, 	2, 2, 2, 	8, 6, 	2, 2, 2, 	8,		4, 	 	//102
 
-	4, 		7, 		8, 9, 8, 	8, 0, 	8, 9, 8, 	6, 6, 	6, 9, 8, 	6,  	4, 	 	//119
+	4, 		7, 		8, 8, 8, 	8, 0, 	8, 8, 8, 	6, 6, 	6, 9, 8, 	6,  	4, 	 	//119
 // parte de arriva terminada ////////////////////////////////////////////////////////
 //										centro arriba
 	4, 		9, 		2, 2, 2, 	8, 0, 	2, 2, 2, 	7, 7, 	2, 2, 2, 	8,		4, 		//136
 	4, 		9, 		2, 2, 2, 	7, 7, 	2, 2, 2, 	6, 6, 	2, 2, 2, 	8,		4, 		//153
 
-	4, 		0, 		0, 9, 0, 	0, 0, 	0, 8, 0, 	0, 0, 	0, 9, 8, 	6,  	4, 		//170
+	4, 		0, 		0, 9, 0, 	0, 8, 	6, 8, 7, 	7, 7, 	7, 8, 8, 	6,  	4, 		//170
 // parte centro abajo ////////////////////////////////////////////////////////////
 
 	4, 		8, 		2, 2, 2, 	7, 7, 	2, 2, 2, 	6, 6, 	2, 2, 2, 	8,		4,		//187
-	4, 		8, 		2, 2, 2, 	6, 6, 	2, 2, 2, 	7, 7, 	2, 2, 2, 	8,  	4, 		//204
+	4, 		8, 		2, 2, 2, 	6, 6, 	2, 2, 2, 	6, 6, 	2, 2, 2, 	8,  	4, 		//204
 
-	4, 		8, 		8, 9, 8, 	0, 0, 	0, 9, 0, 	0, 0, 	8, 9, 8, 	6, 		4, 		//221
+	4, 		8, 		8, 8, 8, 	0, 0, 	0, 8, 0, 	0, 0, 	8, 9, 8, 	6, 		4, 		//221
 
 
 	4, 		8, 		2, 2, 2, 	7, 7, 	2, 2, 2, 	6, 6, 	2, 2, 2, 	9, 		4, 	 	//238
@@ -91,24 +92,17 @@ let gameMap3 = [
 
 
 
-
-
-
 let tileEvents = {
 	// LOS TILES TRANSPORTAN USANDO UNA FUNCION DEL CHARACTER QUE VEREMOS MAS ADELANTE
 	// TILE 					// LUGAR A TRANSPORTAR 
 		// zona inicial	// el evento es el # dentro del array
 		// 17 eventos iniciales
-		// 4 llevan al inicio  (1,1)
-		// 5 llevan al centro  (8,8)
-		// 1 lleva a la salida	(7/28)
-		// 3 llevan a otro transportador   (11,3)
-		// 4 lleven a otro transportador   (8,14)
+		
 		22 : function(c) { c.placeAt(8,8);  },
 		28 : function(c) { c.placeAt(1,1);  },
 		32 : function(c) { c.placeAt(8,14); },
 //									lleva al inicio para enseñar
-		69 : function(c) { c.placeAt(1,1);  },	
+		69 : function(c) { c.placeAt(1,1); 	},	 // enseñar 
 		75 : function(c) { c.placeAt(11,3); },
 		77 : function(c) { c.placeAt(8,14); },
 		83 : function(c) { c.placeAt(8,14); },
@@ -131,13 +125,16 @@ let tileEvents = {
 			// 1er lugar / 2do cambiar mapa / 3ro borrar eventos 
 			c.placeAt(7,15); 
 			gameMap = gameMap2;	// cambia de nivel
+			myAudio.src = "./music/icy.mp3"
 			tileEvents = {
 
 
 				27 : function(c) {  // 1er lugar / 2do cambiar mapa / 3ro borrar eventos
 					c.placeAt(8,14);  
 					gameMap = gameMap3; 
+					myAudio.src = "./music/conveyor.mp3"
 					tileEvents = {
+						42: function() {gameWon()}
 						// aqui van eventos nivel 3 
 }
 				},  
@@ -145,9 +142,7 @@ let tileEvents = {
 			}		
 				
 			
-		},		
-			
-		// nivel 4 mario 
+		},	
 	///////////////////////////////////////////////////
 	}
 
@@ -274,7 +269,7 @@ let viewport = {
 ///////////////////////////////////////////////////////////
 ///////////function del jugador, 
 
-var player = new Character();
+let player = new Character();
 
 function Character()
 {
@@ -286,13 +281,13 @@ function Character()
 	////////////////////////////////////////////////////////
 // QUE TAN LENTO/RÁPIDO SE MUEVE DE ACUERDO AL TIPO DE TILE
 	this.delayMove	= {};
-	this.delayMove[floorTypes.path]			= 100;
+	this.delayMove[floorTypes.path]			= 200;
 	this.delayMove[floorTypes.grass]		= 250;
 	this.delayMove[floorTypes.ice]			= 300;
-	this.delayMove[floorTypes.conveyorU]	= 200;
-	this.delayMove[floorTypes.conveyorD]	= 200;
-	this.delayMove[floorTypes.conveyorL]	= 200;
-	this.delayMove[floorTypes.conveyorR]	= 200;
+	this.delayMove[floorTypes.conveyorU]	= 300;
+	this.delayMove[floorTypes.conveyorD]	= 300;
+	this.delayMove[floorTypes.conveyorL]	= 300;
+	this.delayMove[floorTypes.conveyorR]	= 300;
 // IMAGEN DEL SPRITE AL MOVERSE 
 	this.direction	= directions.up;
 	this.sprites = {};
@@ -431,6 +426,17 @@ window.onload = function()
 	window.addEventListener("keyup", function(e) {
 		if(e.keyCode>=37 && e.keyCode<=40) { keysDown[e.keyCode] = false; }	});
 
+	// evento de musica 
+	
+	//Enter para sonar / espacio para pausar
+	document.addEventListener('keydown', function(e) {
+		if (e.keyCode == 13) {myAudio.play(); }
+		else if (e.keyCode == 32 ) {
+					myAudio.pause()
+				}
+		
+	})
+
 
 	
 	viewport.screen = [document.getElementById('game').width,
@@ -449,7 +455,7 @@ window.onload = function()
 
 		if(tileTypes[x].animated)
 		{
-			var t = 0;
+			let t = 0;
 			
 			for(s in tileTypes[x].sprite)
 			{
@@ -466,7 +472,7 @@ window.onload = function()
 
 //// funcion que dibujara el juego
 ////////////////////////////////////////////////
-// aqui esta el error 
+
 function drawGame()
 {
 	let currentFrameTime = Date.now();
@@ -530,18 +536,15 @@ function drawGame()
 
 /// funciones de ganar perder
 ////////////////////////////////
-function gameOver(){
-    clearInterval(interval)
-    ctx.font = "50px Avenir"
-    ctx.fillStyle = "white"
-    ctx.fillText('GAME OVER',100,100)
-}
 
 function gameWon(){
-    clearInterval(interval)
-    ctx.font = "50px Avenir"
-    ctx.fillStyle = "white"
-    ctx.fillText('YOU WON""',100,100)
+   alert("Congratulations!! You Escaped The Labyrinth!!")
 }
+
+	
+
+
+
+
 
 ///crear el if... si pasa tanto tiemo pierdes,  si llegas a tal, ganas 
